@@ -1,0 +1,36 @@
+{
+  "name": "@voidzero-dev/doc-kit-theme",
+  "version": "0.0.0",
+  "description": "The VoidZero design for doc-kit sites",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ovflowd/voidzero-dev-doc-kit-theme.git"
+  },
+  "files": [
+    "components",
+    "styles",
+    "config.mjs",
+    "utils.mjs"
+  ],
+  "type": "module",
+  "exports": {
+    "./config": "./config.mjs",
+    "./styles.css": "./styles/index.css",
+    "./components/*": "./components/*",
+    "./utils": "./utils.mjs"
+  },
+  "dependencies": {
+    "@orama/ui": "^1.5.4",
+    "@rive-app/canvas-lite": "^2.43.1",
+    "@tailwindcss/vite": "^4.3.3",
+    "@voidzero-dev/vitepress-theme": "^5.0.7",
+    "tailwindcss": "^4.3.3",
+    "vitepress-plugin-group-icons": "^1.7.6"
+  },
+  "peerDependencies": {
+    "@doc-kit/generator-react": ">=0.4.0",
+    "@node-core/ui-components": "^1.7.6",
+    "preact": "^10.29.8"
+  }
+}
