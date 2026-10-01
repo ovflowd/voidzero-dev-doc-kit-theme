@@ -27,8 +27,7 @@
       border-[5px]
       border-transparent
       border-l-stroke
-      content-['']
-      dark:border-l-nickel;
+      content-[''];
   }
 
   .wrapper--ticks::after,
@@ -39,8 +38,16 @@
       border-[5px]
       border-transparent
       border-r-stroke
-      content-['']
-      dark:border-r-nickel;
+      content-[''];
+  }
+
+  /* Not `dark:`, which would follow the pseudo-element: nothing may */
+  [data-theme='dark'] :is(.wrapper--ticks, .tick-left)::before {
+    @apply border-l-nickel;
+  }
+
+  [data-theme='dark'] :is(.wrapper--ticks, .tick-right)::after {
+    @apply border-r-nickel;
   }
 
   .button {
@@ -98,7 +105,7 @@
           animate-[move-background_16s_ease-in-out_infinite]
           rounded-[calc(0.5rem+3px)]
           bg-[#cccccc]
-          bg-[url('@voidzero-dev/vitepress-theme/src/assets/rolldown/primary-button-background.jpg')]
+          bg-[url('/assets/brand/rolldown/primary-button-background.jpg')]
           bg-size-[150%_150%]
           bg-center
           transition-all
