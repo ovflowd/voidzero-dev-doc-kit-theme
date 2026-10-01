@@ -13,10 +13,14 @@ const THEME = import.meta.dirname;
  * The VoidZero brand assets: fonts and images, from the VitePress theme they
  * are published with. They are VoidZero's, and not part of this package.
  */
-const BRAND = join(
-  dirname(createRequire(import.meta.url).resolve('@voidzero-dev/vitepress-theme/package.json')),
-  'src/assets',
+const BRAND_PACKAGE = dirname(
+  createRequire(import.meta.url).resolve('@voidzero-dev/vitepress-theme/package.json'),
 );
+
+const BRAND = join(BRAND_PACKAGE, 'src/assets');
+
+/** The VoidZero typefaces, which the theme's styles load from `/assets/fonts` */
+const FONTS = join(BRAND_PACKAGE, 'src/fonts');
 
 /** doc-kit's components this theme replaces, keeping the behavior doc-kit wires around them */
 const OVERRIDES = {
@@ -146,13 +150,14 @@ export const createBundler = ({ pages }) =>
   });
 
 /**
- * The brand assets of a VoidZero project, for doc-kit's `pathsToCopy`: its
- * logos, the VoidZero logo, and its marketing images under
- * `assets/brand/<project>`.
+ * The brand assets of a VoidZero project, for doc-kit's `pathsToCopy`: the
+ * fonts (`assets/fonts`), its logos, the VoidZero logo, and its marketing
+ * images under `assets/brand/<project>`.
  *
  * @param {string} project The project (`rolldown`, `vite`, `oxc`, …)
  */
 export const brandAssets = (project) => ({
+  [FONTS]: 'assets/fonts',
   [join(BRAND, `logos/${project}-dark.svg`)]: `assets/brand/${project}-dark.svg`,
   [join(BRAND, `logos/${project}-light.svg`)]: `assets/brand/${project}-light.svg`,
   [join(BRAND, `icons/${project}-light.svg`)]: `assets/brand/${project}-icon-light.svg`,
