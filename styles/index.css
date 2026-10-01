@@ -1,0 +1,12 @@
+/* The VoidZero design for doc-kit's `html` generator. A site's stylesheet
+   imports this one, and adds an `@source` for its own components. */
+
+@import 'tailwindcss' source(none);
+@source '../components';
+
+@import './theme.css';
+@import './fonts.css';
+@import './base.css';
+@import './marketing.css';
+@import './markdown.css';
+@import './shiki.css';

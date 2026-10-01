@@ -1,0 +1,205 @@
+/* Building blocks of the VoidZero marketing design: framed page sections
+   with tick marks at their corners, buttons, and the typography of the home
+   page. In the components layer, so utilities on the same elements win, as
+   in the VoidZero theme. */
+
+@layer components {
+  .wrapper {
+    @apply relative
+      mx-auto
+      divide-stroke
+      overflow-x-clip
+      border-stroke
+      md:max-w-[calc(100vw-2rem)]
+      md:border-r
+      md:border-l
+      min-[90rem]:max-w-[90rem]
+      dark:divide-nickel
+      dark:border-nickel;
+  }
+
+  /* Tick marks: triangles at the top corners of a section */
+  .wrapper--ticks::before,
+  .tick-left::before {
+    @apply absolute
+      -top-[5px]
+      left-0
+      border-[5px]
+      border-transparent
+      border-l-stroke
+      content-['']
+      dark:border-l-nickel;
+  }
+
+  .wrapper--ticks::after,
+  .tick-right::after {
+    @apply absolute
+      -top-[5px]
+      right-0
+      border-[5px]
+      border-transparent
+      border-r-stroke
+      content-['']
+      dark:border-r-nickel;
+  }
+
+  .button {
+    @apply inline-flex
+      items-center
+      justify-center
+      gap-2
+      overflow-hidden
+      rounded-lg
+      bg-white
+      px-4
+      py-2
+      font-medium
+      text-primary
+      outline
+      outline-stroke
+      transition-all
+      select-none
+      hover:scale-105
+      hover:shadow-md
+      dark:bg-transparent
+      dark:text-white
+      dark:outline-nickel
+      dark:hover:bg-white
+      dark:hover:text-primary;
+
+    &.button--white {
+      @apply bg-white
+        text-primary;
+    }
+
+    /* The animated gradient border of the main call to action */
+    &.button--primary {
+      @apply relative
+        transform-gpu
+        overflow-visible
+        text-white
+        outline-none
+        transition-transform
+        hover:scale-105
+        hover:text-white
+        dark:hover:bg-transparent
+        dark:hover:text-white;
+
+      & > * {
+        @apply relative
+          isolate
+          z-10;
+      }
+
+      &::before {
+        @apply absolute
+          -inset-[3px]
+          -z-2
+          animate-[move-background_16s_ease-in-out_infinite]
+          rounded-[calc(0.5rem+3px)]
+          bg-[#cccccc]
+          bg-[url('@voidzero-dev/vitepress-theme/src/assets/rolldown/primary-button-background.jpg')]
+          bg-size-[150%_150%]
+          bg-center
+          transition-all
+          duration-200
+          ease-in-out
+          content-[''];
+      }
+
+      &::after {
+        @apply absolute
+          inset-0
+          -z-1
+          rounded-lg
+          bg-primary
+          transition-all
+          duration-300
+          ease-in-out
+          content-[''];
+      }
+
+      &:hover::before {
+        @apply scale-x-[1.0125]
+          scale-y-[1.025]
+          brightness-130;
+      }
+
+      &:hover::after {
+        @apply scale-x-[0.98]
+          scale-y-[0.96];
+      }
+    }
+  }
+
+  @keyframes move-background {
+    0%,
+    100% {
+      background-position: 40% 40%;
+    }
+
+    50% {
+      background-position: 60% 60%;
+    }
+  }
+
+  /* Marketing typography: the home page and its footer */
+  :is(.home, .site-footer) {
+    & h1 {
+      @apply font-heading
+        text-4xl
+        font-medium
+        tracking-tighter
+        text-balance
+        sm:text-5xl
+        md:text-6xl
+        md:leading-[4.2rem];
+    }
+
+    & h2 {
+      @apply font-heading
+        text-3xl
+        font-medium
+        tracking-tight
+        text-balance
+        md:text-5xl;
+    }
+
+    & h3 {
+      @apply font-heading
+        text-2xl
+        font-medium
+        tracking-tight
+        text-balance
+        md:text-[2.5rem];
+    }
+
+    & h5 {
+      @apply font-heading
+        text-lg
+        font-medium
+        text-balance
+        md:text-2xl
+        md:leading-7;
+    }
+
+    & p,
+    & li {
+      @apply text-base
+        text-grey
+        md:text-lg;
+    }
+  }
+
+  .project-icon {
+    @apply flex
+      items-center
+      gap-2;
+
+    & figcaption {
+      @apply text-base
+        tracking-tight
+        text-white;
+    }
+  }
+}

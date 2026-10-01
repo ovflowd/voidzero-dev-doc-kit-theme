@@ -1,0 +1,127 @@
+/* Code blocks: the code Shiki highlights, and the icons of their names ----- */
+
+/* Outside of the layers: doc-kit's `main code` rule sizes code too */
+[data-code-block] pre code {
+  @apply block
+    w-fit
+    min-w-full
+    rounded-none
+    bg-transparent
+    px-6
+    text-(length:--code-font-size)
+    leading-(--code-line-height)
+    text-text-2;
+}
+
+/* The icon of a code block's name, from `virtual:group-icons.css` */
+:is([data-code-block], [data-code-group]) [data-title]::before {
+  @apply mr-[0.5em]
+    mb-[-0.2em]
+    inline-block
+    size-[1em]
+    bg-(image:--icon)
+    bg-contain
+    bg-center
+    bg-no-repeat;
+}
+
+/* Syntax highlighting colors. doc-kit highlights code with Shiki's
+   github-light-default and nord themes; the Rolldown site uses github-light and
+   github-dark. Every token carries both of its colors inline, so each color of
+   doc-kit's themes is mapped to the one it corresponds to in the site's
+   themes (derived by highlighting the site's code samples with both pairs). */
+
+[data-code-block] .shiki {
+  @apply text-[#24292e]
+    dark:text-[#e1e4e8]!;
+
+  /* Shiki emits both themes: show the active one */
+  &,
+  & span {
+    @apply bg-transparent!;
+  }
+}
+
+[data-theme='dark'] [data-code-block] .shiki span {
+  @apply text-(--shiki-dark)!;
+}
+
+[data-theme='light'] [data-code-block] .shiki span[style*='color:#1F2328' i] {
+  @apply text-[#24292e]!;
+}
+
+[data-theme='light'] [data-code-block] .shiki span[style*='color:#0A3069' i] {
+  @apply text-[#032f62]!;
+}
+
+[data-theme='light'] [data-code-block] .shiki span[style*='color:#6E7781' i] {
+  @apply text-[#6a737d]!;
+}
+
+[data-theme='light'] [data-code-block] .shiki span[style*='color:#CF222E' i] {
+  @apply text-[#d73a49]!;
+}
+
+[data-theme='light'] [data-code-block] .shiki span[style*='color:#8250DF' i] {
+  @apply text-[#6f42c1]!;
+}
+
+[data-theme='light'] [data-code-block] .shiki span[style*='color:#0550AE' i] {
+  @apply text-[#005cc5]!;
+}
+
+[data-theme='light'] [data-code-block] .shiki span[style*='color:#116329' i] {
+  @apply text-[#22863a]!;
+}
+
+[data-theme='light'] [data-code-block] .shiki span[style*='color:#953800' i] {
+  @apply text-[#6f42c1]!;
+}
+
+[data-theme='light'] [data-code-block] .shiki span[style*='color:#82071E' i] {
+  @apply text-[#b31d28]!;
+}
+
+[data-theme='dark'] [data-code-block] .shiki span[style*='--shiki-dark:#A3BE8C' i] {
+  @apply text-[#9ecbff]!;
+}
+
+[data-theme='dark'] [data-code-block] .shiki span[style*='--shiki-dark:#616E88' i] {
+  @apply text-[#6a737d]!;
+}
+
+[data-theme='dark'] [data-code-block] .shiki span[style*='--shiki-dark:#707E99' i] {
+  @apply text-[#6a737d]!;
+}
+
+[data-theme='dark'] [data-code-block] .shiki span[style*='--shiki-dark:#81A1C1' i] {
+  @apply text-[#f97583]!;
+}
+
+[data-theme='dark'] [data-code-block] .shiki span[style*='--shiki-dark:#88C0D0' i] {
+  @apply text-[#b392f0]!;
+}
+
+[data-theme='dark'] [data-code-block] .shiki span[style*='--shiki-dark:#D8DEE9' i] {
+  @apply text-[#e1e4e8]!;
+}
+
+[data-theme='dark'] [data-code-block] .shiki span[style*='--shiki-dark:#ECEFF4' i] {
+  @apply text-[#e1e4e8]!;
+}
+
+[data-theme='dark'] [data-code-block] .shiki span[style*='--shiki-dark:#8FBCBB' i] {
+  @apply text-[#e1e4e8]!;
+}
+
+[data-theme='dark'] [data-code-block] .shiki span[style*='--shiki-dark:#BF616A' i] {
+  @apply text-[#fdaeb7]!;
+}
+
+[data-theme='dark'] [data-code-block] .shiki span[style*='--shiki-dark:#EBCB8B' i] {
+  @apply text-[#dbedff]!;
+}
+
+[data-theme='dark'] [data-code-block] .shiki span[style*='--shiki-dark:#B48EAD' i] {
+  @apply text-[#79b8ff]!;
+}

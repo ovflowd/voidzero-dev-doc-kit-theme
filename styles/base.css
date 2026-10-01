@@ -1,0 +1,86 @@
+/* Element defaults, in the base layer so that the marketing styles and
+   Tailwind utilities build on top of them, as in the VoidZero theme */
+@layer base {
+  html {
+    @apply overflow-x-clip
+      scroll-pt-[calc(var(--nav-height)+24px)]
+      font-sans
+      text-base/[1.4]
+      [-webkit-text-size-adjust:100%];
+  }
+
+  body {
+    @apply m-0
+      min-h-screen
+      min-w-80
+      overflow-x-clip
+      [font-synthesis:style]
+      [text-rendering:optimizeLegibility];
+  }
+
+  /* The page stays put behind the open navigation panel of narrow screens */
+  body:has(#nav-open:checked) {
+    @apply max-lg:overflow-hidden;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    /* Not `leading-*`: its variable would override the line height of the
+       `text-*` utilities headings are sized with */
+    @apply m-0
+      font-heading
+      [line-height:1.2]
+      font-medium
+      wrap-break-word;
+  }
+
+  a {
+    @apply text-inherit
+      no-underline;
+  }
+
+  pre,
+  code,
+  kbd,
+  samp {
+    @apply font-mono;
+  }
+
+  * {
+    @apply [scrollbar-color:var(--color-divider)_transparent]
+      [scrollbar-width:thin];
+  }
+
+  /* Each color scheme can show its own image */
+  [data-theme='dark'] .light-only,
+  [data-theme='light'] .dark-only {
+    @apply hidden!;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    ::before,
+    ::after {
+      @apply scroll-auto!
+        transition-none!
+        [animation-duration:1ms]!
+        [animation-iteration-count:1]!;
+    }
+  }
+}
+
+/* Outside of the layers: doc-kit's own stylesheet styles the page too */
+body {
+  @apply bg-bg
+    font-sans
+    text-text;
+}
+
+/* doc-kit smooths fonts per pixel on every element, which reads bolder */
+* {
+  @apply antialiased;
+}

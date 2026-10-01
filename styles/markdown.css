@@ -1,0 +1,419 @@
+/* The rendered Markdown of a page. doc-kit wraps every heading (and the
+   badges or history next to it) in a <div>, so heading spacing lives on that
+   wrapper. Element selectors are wrapped in :where(), to stay above doc-kit's
+   own `main` styles but below anything more specific, and skip components
+   rendering their own markup in a page (`raw`, VitePress' `vp-raw`). */
+
+.markdown {
+  /* doc-kit lays out any <div> holding a heading as a heading row: headings
+     it leaves unwrapped (h6) sit in the page itself */
+  @apply block
+    text-text;
+
+  /* Headings ----------------------------------------------------------- */
+
+  & :where(:is(h1, h2, h3, h4, h5, h6):not(.raw *)) {
+    @apply static
+      m-0
+      flex-auto
+      scroll-mt-[calc(var(--nav-height)+24px)]
+      overflow-visible
+      font-heading
+      font-semibold
+      text-clip
+      whitespace-normal;
+
+    /* The heading text links to itself */
+    & > a.anchor {
+      @apply font-[inherit]
+        text-inherit
+        no-underline;
+    }
+
+    /* doc-kit's hover marker ("#") sits left of the heading's row, before
+       any API badge, as on VitePress */
+    &[id] .anchor::after {
+      @apply absolute
+        -left-[0.87em]
+        m-0
+        font-medium
+        text-brand
+        select-none;
+    }
+  }
+
+  & :where(div:has(> :is(h1, h2, h3, h4, h5, h6)):not(.raw *)) {
+    @apply relative
+      flex
+      flex-row
+      flex-wrap
+      items-center
+      gap-2;
+  }
+
+  & :where(div:has(> h1):not(.raw *)) {
+    @apply m-0;
+  }
+
+  & :where(h1:not(.raw *)) {
+    @apply text-[28px]/10
+      tracking-[-0.02em]
+      md:text-[32px]/10;
+  }
+
+  & :where(div:has(> h2):not(.raw *)) {
+    @apply mx-0
+      mt-12
+      mb-4
+      border-t
+      border-divider
+      pt-6;
+  }
+
+  & :where(h2:not(.raw *)) {
+    @apply text-2xl/8
+      tracking-[-0.02em];
+  }
+
+  & :where(div:has(> h3):not(.raw *)) {
+    @apply m-0
+      mt-8;
+  }
+
+  & :where(h3:not(.raw *)) {
+    @apply text-xl/7
+      tracking-[-0.01em];
+  }
+
+  & :where(div:has(> h4):not(.raw *)) {
+    @apply m-0
+      mt-6;
+  }
+
+  & :where(h4:not(.raw *)) {
+    @apply text-lg/6
+      tracking-[-0.01em];
+  }
+
+  & :where(div:has(> :is(h5, h6)):not(.raw *)) {
+    @apply m-0
+      mt-6;
+  }
+
+  & :where(:is(h5, h6):not(.raw *)) {
+    @apply text-base/6;
+  }
+
+  & :where(:is(h1, h2, h3, h4) code:not(.raw *)) {
+    @apply text-[0.9em];
+  }
+
+  /* The source link doc-kit adds under an API entry's heading, like the
+     "Defined in" line of the previous site */
+  & > :where(span:not(.raw *)) {
+    @apply mx-0
+      mt-2
+      mb-4
+      block
+      text-sm/5
+      wrap-anywhere;
+  }
+
+  /* Paragraphs and inline elements ------------------------------------- */
+
+  & :where(:is(p, summary):not(.raw *)) {
+    @apply mx-0
+      my-4;
+  }
+
+  & :where(p:not(.raw *)) {
+    @apply leading-7;
+  }
+
+  & :where(a:not(.raw *)) {
+    @apply font-medium
+      text-brand
+      underline
+      underline-offset-2
+      transition-[color,opacity]
+      duration-250;
+  }
+
+  & :where(strong:not(.raw *)) {
+    @apply font-semibold;
+  }
+
+  & :where(blockquote:not(.raw *)) {
+    @apply mx-0
+      my-4
+      border-l-2
+      border-divider
+      pl-4
+      text-text-2;
+
+    & > p {
+      @apply m-0
+        text-[16px];
+    }
+  }
+
+  & :where(hr:not(.raw *)) {
+    @apply mx-0
+      my-4
+      border-0
+      border-t
+      border-divider;
+  }
+
+  /* Lists -------------------------------------------------------------- */
+
+  & :where(:is(ul, ol):not(.raw *)) {
+    @apply mx-0
+      my-4
+      p-0
+      pl-5;
+  }
+
+  & :where(ul:not(.raw *)) {
+    @apply list-disc;
+  }
+
+  & :where(ol:not(.raw *)) {
+    @apply list-decimal;
+  }
+
+  & :where(li:not(.raw *)) {
+    @apply leading-7
+      text-text-1;
+
+    & + li {
+      @apply mt-2;
+    }
+
+    & > :is(ol, ul) {
+      @apply m-0
+        mt-2;
+    }
+  }
+
+  /* Tables ------------------------------------------------------------- */
+
+  & :where(.overflow-container:not(.raw *)) {
+    @apply mx-0
+      my-5
+      overflow-x-auto;
+  }
+
+  & :where(table:not(.raw *)) {
+    @apply border-collapse;
+  }
+
+  & :where(tr:not(.raw *)) {
+    @apply border-t
+      border-divider
+      bg-bg;
+
+    &:nth-child(2n) {
+      @apply bg-bg-soft;
+    }
+  }
+
+  & :where(:is(th, td):not(.raw *)) {
+    @apply border
+      border-divider
+      px-4
+      py-2
+      text-[14px]
+      break-normal;
+  }
+
+  & :where(th:not(.raw *)) {
+    @apply bg-bg-soft
+      text-left
+      font-semibold
+      text-text-2;
+  }
+
+  /* Inline code -------------------------------------------------------- */
+
+  /* doc-kit sets code in IBM Plex Mono */
+  & :where(code:not(.raw *)) {
+    @apply font-mono;
+  }
+
+  /* Code blocks wrap their <code> in island slots: exclude by ancestry */
+  & :where(code:not(pre code):not(.raw *)) {
+    @apply rounded-sm
+      bg-code-bg
+      px-1.5
+      py-[3px]
+      leading-[inherit]
+      wrap-break-word
+      [font-size-adjust:0.52]
+      [transition:color_0.25s,background-color_0.5s];
+  }
+
+  & :where(code:not(pre code, :is(h1, h2, h3, h4, h5, h6) code):not(.raw *)) {
+    @apply text-(length:--code-font-size)
+      text-brand;
+  }
+
+  & :where(a:not(.anchor) > code:not(.raw *)) {
+    @apply text-brand;
+  }
+
+  /* Details ------------------------------------------------------------ */
+
+  & :where(details:not(.raw *)) {
+    @apply mx-0
+      my-4
+      rounded-lg
+      border
+      border-transparent
+      bg-default-soft
+      px-4
+      pt-4
+      pb-2
+      text-[14px]/6;
+
+    & > summary {
+      @apply m-0
+        mb-2
+        cursor-pointer
+        font-bold
+        select-none;
+    }
+
+    & p {
+      @apply my-2
+        leading-6;
+    }
+
+    & li {
+      @apply leading-6;
+    }
+  }
+
+  /* Diagrams, rendered for both color schemes -------------------------- */
+
+  & :where(.diagram:not(.raw *)) {
+    & a text {
+      @apply underline;
+    }
+  }
+
+  /* Images ------------------------------------------------------------- */
+
+  & :where(img:not(.raw *)) {
+    @apply inline-block
+      max-w-full;
+  }
+}
+
+/* As in the VoidZero theme, paragraphs and list items are 16px anywhere in
+   the content, custom blocks (14px) included: any other rule wins */
+:where(.markdown) :where(p, li):not(.raw *) {
+  @apply text-[16px];
+}
+
+/* Custom blocks: GitHub alerts and stability indicators -------------------- */
+
+.custom-block {
+  @apply mx-0
+    my-4
+    rounded-lg
+    border
+    border-transparent
+    px-4
+    pt-4
+    pb-2
+    text-[14px]/6
+    text-text-1;
+
+  & p {
+    @apply mx-0
+      my-2
+      leading-6;
+
+    &:first-child {
+      @apply m-0;
+    }
+  }
+
+  & a {
+    @apply text-inherit
+      transition-opacity
+      duration-250
+      hover:opacity-75;
+  }
+
+  /* A stability indicator is a single line */
+  &.stability {
+    @apply px-4
+      py-2;
+  }
+
+  &.info {
+    @apply bg-default-soft;
+
+    & :is(a, code:not(pre code)) {
+      @apply text-brand;
+    }
+
+    & code:not(pre code) {
+      @apply bg-default-soft;
+    }
+  }
+
+  &.tip {
+    @apply bg-brand-soft;
+
+    & :is(a, code:not(pre code)) {
+      @apply text-brand;
+    }
+
+    & code:not(pre code) {
+      @apply bg-brand-soft;
+    }
+  }
+
+  &.important {
+    @apply bg-important-soft;
+
+    & :is(a, code:not(pre code)) {
+      @apply text-important;
+    }
+
+    & code:not(pre code) {
+      @apply bg-important-soft;
+    }
+  }
+
+  &.warning {
+    @apply bg-warning-soft;
+
+    & :is(a, code:not(pre code)) {
+      @apply text-warning;
+    }
+
+    & code:not(pre code) {
+      @apply bg-warning-soft;
+    }
+  }
+
+  &.danger {
+    @apply bg-danger-soft;
+
+    & :is(a, code:not(pre code)) {
+      @apply text-danger;
+    }
+
+    & code:not(pre code) {
+      @apply bg-danger-soft;
+    }
+  }
+}
+
+.custom-block-title {
+  @apply font-semibold;
+}
