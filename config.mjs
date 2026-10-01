@@ -30,6 +30,15 @@ const OVERRIDES = {
   '@node-core/ui-components/MDX/CodeTabs': 'components/CodeTabs.jsx',
 };
 
+/**
+ * Packages whose components share React contexts with doc-kit's (the search
+ * dialog's), so there must be a single copy of each: doc-kit's.
+ */
+const SHARED_WITH_DOC_KIT = ['@orama/ui', '@node-core/ui-components'];
+
+/** doc-kit's React generator, which the shared packages are resolved from */
+const DOC_KIT = createRequire(import.meta.url).resolve('@doc-kit/generator-react/package.json');
+
 /** Logs of dependencies that are expected, and not worth reporting */
 const IGNORED_LOGS = new Set([
   // Radix UI marks its modules as client components, which is meaningless
@@ -112,6 +121,31 @@ const codeIcons = (pages) => {
 };
 
 /**
+ * Whether an import is of a package shared with doc-kit.
+ *
+ * @param {string} source
+ */
+const isShared = (source) =>
+  SHARED_WITH_DOC_KIT.some((name) => source === name || source.startsWith(`${name}/`));
+
+/**
+ * Resolves the packages shared with doc-kit as doc-kit does, wherever they
+ * are imported from: the theme and the site would otherwise get copies of
+ * their own, whose contexts doc-kit's providers don't provide.
+ */
+const sharedWithDocKit = () => ({
+  name: 'voidzero-shared-with-doc-kit',
+  enforce: 'pre',
+  resolveId(source, importer, options) {
+    if (!isShared(source) || importer === DOC_KIT) {
+      return undefined;
+    }
+
+    return this.resolve(source, DOC_KIT, { ...options, skipSelf: true });
+  },
+});
+
+/**
  * Aliases replacing doc-kit's components with the theme's. They match whole
  * specifiers only: a plain string alias would also capture the components'
  * own files (`…/Search/Modal/index.module.css`).
@@ -136,7 +170,7 @@ const overrideAliases = () => {
  */
 export const createBundler = ({ pages }) =>
   new ViteBundler({
-    plugins: [tailwindcss(), codeIcons(pages)],
+    plugins: [sharedWithDocKit(), tailwindcss(), codeIcons(pages)],
     resolve: { alias: overrideAliases() },
     build: {
       rolldownOptions: {
